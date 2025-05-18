@@ -105,3 +105,40 @@ Docker 是一種容器化技術，可以讓你把應用程式和它的執行環�
 - docker-compose up	用 docker-compose.yml 啟動應用（需安裝 Compose）
 - docker-compose down	停止並移除所有服務
 
+## 🔧🐳 Docker 實作：自製 Ubuntu + Vim 映像並上傳 Docker Hub
+```bash
+## Step 1: 從 Docker Hub 下載最新的 Ubuntu 映像
+docker pull ubuntu:latest
+
+## Step 2: 查看目前本地的映像
+docker images
+
+## Step 3: 以 ubuntu:latest 建立並啟動互動式容器，命名為 myubuntu1
+docker run -it --name myubuntu1 ubuntu:latest bash
+
+## Step 4: 在容器內執行這些指令（安裝 vim）
+apt update && apt install -y vim
+
+## Step 5: 離開容器（回到主機終端）
+exit
+
+## Step 6: 將 myubuntu1 的容器內容提交為新的映像
+# 請將 "yourname" 改為你的名字；"username" 改為你的 Docker Hub 帳號
+docker commit -a "yourname" -m "install vim" myubuntu1 username/ubuntu-with-vim:latest
+
+## Step 7: 查看已建立的新映像
+docker images
+
+## Step 8: 登入 Docker Hub（輸入帳號與密碼）
+docker login
+
+## Step 9: 將建立的映像推送到 Docker Hub
+docker push username/ubuntu-with-vim:latest
+
+## Step 10: （選用）登出 Docker Hub
+docker logout
+
+## Step 11: 到 Docker Hub 查看映像
+# 開啟瀏覽器並前往 https://hub.docker.com/repositories
+# 登入你的帳號後，即可看到 username/ubuntu-with-vim 的映像已經上傳
+```
