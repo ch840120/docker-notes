@@ -217,4 +217,6 @@ docker push yourHostIP:5000/username/ubuntu-with-vim:latest
 curl http://yourHostIP:5000/v2/_catalog  
 # 回應中應會出現 "username/ubuntu-with-vim"
 ```
+<img src="https://github.com/user-attachments/assets/4cecd3f6-a4b3-4ccb-bcb9-1f9a259210c1" width="500"/>
+
 
