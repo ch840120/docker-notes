@@ -142,3 +142,79 @@ docker logout
 # 開啟瀏覽器並前往 https://hub.docker.com/repositories
 # 登入你的帳號後，即可看到 username/ubuntu-with-vim 的映像已經上傳
 ```
+
+## 🔧🐳 Docker 實作：自製 Ubuntu + Vim 映像並上傳至 Private Docker Registry
+
+```bash
+# ✅ Step 1: 從 Docker Hub 下載最新的 Ubuntu 映像
+docker pull ubuntu:latest  # 取得官方最新版本的 Ubuntu 映像
+
+# ✅ Step 2: 查看目前本地的映像
+docker images  # 確認映像是否已下載成功
+
+# ✅ Step 3: 以 ubuntu:latest 建立並啟動互動式容器，命名為 myubuntu1
+docker run -it --name myubuntu1 ubuntu:latest bash  
+# 啟動容器並進入 bash shell，用來手動安裝 vim
+
+# ✅ Step 4: 在容器內執行（安裝 vim）
+apt update && apt install -y vim  
+# 更新套件列表並安裝 vim 編輯器
+
+# ✅ Step 5: 離開容器（回到主機）
+exit  # 離開容器並回到本機終端機
+
+# ✅ Step 6: 將 myubuntu1 容器內容提交為新的映像
+docker commit -a "yourname" -m "install vim" myubuntu1 username/ubuntu-with-vim:latest  
+# 將容器內容保存為新映像，加入作者和說明
+# 👉 請將 "yourname" 改為你的名字；"username" 改為你的 Docker 使用者名稱
+
+# ✅ Step 7: 查看新建立的映像
+docker images  # 再次確認已建立的 ubuntu-with-vim 映像是否存在
+
+# ✅ Step 8: 下載官方 Docker Registry 映像
+docker pull registry  # 從 Docker Hub 拉下私有 registry 映像
+
+# ✅ Step 9: 檢查 registry 映像是否已存在
+docker images
+
+# ✅ Step 10: 啟動本地 Registry 並將映像資料持久化到 Windows 路徑
+docker run -d -p 5000:5000 -v /mnt/c/Users/User/myregistry:/var/lib/registry registry
+# 將本機 5000 port 映射到容器，並使用 volume 掛載資料到 Windows 目錄
+
+# ✅ Step 11: 確認 Registry 容器是否正在運作
+docker ps  # 查看是否有 registry 容器在運行中
+
+# ✅ Step 12: 測試 Registry 是否有正常回應
+curl http://yourHostIP:5000/v2/_catalog  
+# 檢查 registry 是否能回傳 repository 資訊（初次應為空）
+# 👉 請將 "yourHostIP" 改為你的主機IP
+
+# ✅ Step 13: 將映像打上標籤以準備推送到私有 registry
+docker tag username/ubuntu-with-vim:latest yourHostIP:5000/username/ubuntu-with-vim:latest  
+# 加上新的 tag，指向你的私有 registry 位置
+# 👉  請將 "username" 改為你的 Docker 使用者名稱; "yourHostIP" 改為你的主機IP
+
+# ✅ Step 14: 設定 Docker 接受 insecure registry（僅限 HTTP，未加密）
+
+# 👉 適用 Docker Desktop for Windows + WSL 用戶
+# 開啟 Docker Desktop → Settings → Docker Engine
+# 修改設定 JSON，加入：
+
+# ⚠️ 注意格式正確（如下所示）
+# {
+#   ...其他設定...
+#   "insecure-registries": ["yourHostIP:5000"]
+# }
+
+# 修改後按「Apply & Restart」讓設定生效
+
+# ✅ Step 15: 推送映像到私有 Registry
+docker push yourHostIP:5000/username/ubuntu-with-vim:latest  
+# 將你自製的映像傳送到私有 registry
+# 👉  請將 "username" 改為你的 Docker 使用者名稱; "yourHostIP" 改為你的主機IP
+
+# ✅ Step 16: 再次查詢 registry，確認映像是否已上傳
+curl http://yourHostIP:5000/v2/_catalog  
+# 回應中應會出現 "username/ubuntu-with-vim"
+```
+
