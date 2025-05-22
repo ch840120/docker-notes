@@ -251,7 +251,7 @@ Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案�
 這份 Dockerfile 會自動安裝 vim（常用的文字編輯器）和 net-tools（提供如 ifconfig、netstat 等網路相關工具），方便你在開發、測試或維護時，隨時擁有這些常用指令。
 同時，我也準備了一個 start.sh 啟動腳本，進行環境初始化與訊息提示，更容易管理自己的容器啟動流程。
 
-#### 專案根目錄
+#### 專案目錄結構
 ```
 ubuntu-netvim/
 ├── Dockerfile
