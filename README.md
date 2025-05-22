@@ -220,4 +220,77 @@ curl http://yourHostIP:5000/v2/_catalog
 ```
 <img src="https://github.com/user-attachments/assets/4cecd3f6-a4b3-4ccb-bcb9-1f9a259210c1" width="500"/>
 
+## 🐳 什麼是 Dockerfile？
+Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案。
+透過撰寫 Dockerfile，我們可以定義應用程式所需的作業系統環境、安裝的套件、複製的程式碼，以及容器啟動時要執行的指令。
+簡單來說，Dockerfile 可以讓專案環境一致、部署更方便，任何人都可以根據這個檔案重現相同的執行環境。🚀
+
+### 📄 常用指令說明
+- FROM 🏗️
+指定要使用的基礎映像。
+例：FROM python:3.10 表示以 Python 3.10 官方映像為基礎。
+
+- WORKDIR 📁
+設定工作目錄。後續的指令（如 COPY、RUN）都會在這個目錄下執行。
+例：WORKDIR /app
+
+- COPY 📦
+複製檔案或資料夾到映像檔內。
+例：COPY . . 會把本地所有檔案複製到容器的當前工作目錄。
+
+- RUN 🛠️
+在建置映像時執行指令，通常用來安裝套件或進行環境設置。
+例：RUN pip install -r requirements.txt
+
+- CMD ▶️
+指定容器啟動時要執行的預設指令。
+例：CMD ["python", "app.py"]
+
+### 🛠️ Dockerfile實作: 自製 Ubuntu 安裝腳本：安裝 vim 與 net-tools
+本專案提供一份自訂的 Dockerfile 與啟動腳本 start.sh，讓你可以快速建立一個包含常用工具的 Ubuntu 環境。
+這份 Dockerfile 會自動安裝 vim（常用的文字編輯器）和 net-tools（提供如 ifconfig、netstat 等網路相關工具），方便你在開發、測試或維護時，隨時擁有這些常用指令。
+同時，我也準備了一個 start.sh 啟動腳本，進行環境初始化與訊息提示，更容易管理自己的容器啟動流程。
+
+#### 專案根目錄
+```
+ubuntu-netvim/
+├── Dockerfile
+├── start.sh
+```
+
+#### Dockerfile
+```dockerfile
+# 使用官方 Ubuntu 作為基礎映像檔
+FROM ubuntu
+
+# 設定環境變數 MYPATH 並給預設值
+ENV MYPATH=/usr/local
+
+# 設定工作目錄
+WORKDIR $MYPATH
+
+# 更新套件列表
+RUN apt update
+
+# 安裝 net-tools（包含 ifconfig）和 vim
+RUN apt install -y net-tools vim
+
+# 開放 80 port
+EXPOSE 80
+
+# 複製啟動腳本到容器
+COPY start.sh $MYPATH/start.sh
+RUN chmod +x $MYPATH/start.sh
+
+# 預設啟動執行腳本
+CMD ["/usr/local/start.sh"]
+```
+#### start.sh
+```bash
+#!/bin/bash
+echo "MYPATH is $MYPATH"
+echo "install ipconfig and vim into ubuntu success-------ok"
+bash
+```
+
 
