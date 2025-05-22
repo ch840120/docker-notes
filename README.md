@@ -251,14 +251,14 @@ Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案�
 這份 Dockerfile 會自動安裝 vim（常用的文字編輯器）和 net-tools（提供如 ifconfig、netstat 等網路相關工具），方便你在開發、測試或維護時，隨時擁有這些常用指令。
 同時，我也準備了一個 start.sh 啟動腳本，進行環境初始化與訊息提示，更容易管理自己的容器啟動流程。
 
-#### 專案目錄結構
+#### 📁 專案目錄結構
 ```
-ubuntu-netvim/
-├── Dockerfile
-├── start.sh
+📁 ubuntu-netvim/
+├── 📄 Dockerfile
+├── 📄 start.sh
 ```
 
-#### Dockerfile
+#### 📄 Dockerfile
 ```dockerfile
 # 使用官方 Ubuntu 作為基礎映像檔
 FROM ubuntu
@@ -285,7 +285,7 @@ RUN chmod +x $MYPATH/start.sh
 # 預設啟動執行腳本
 CMD ["/usr/local/start.sh"]
 ```
-#### start.sh
+#### 📄 start.sh
 ```bash
 #!/bin/bash
 echo "MYPATH is $MYPATH"
@@ -293,4 +293,24 @@ echo "install ipconfig and vim into ubuntu success-------ok"
 bash
 ```
 
+#### 🛠️ Docker build 範例
+```bash
+# 進行 build，並指定 image 名稱為 my-image:latest
+docker build -t my-image:latest .
+```
+💡 備註：
+- -t 可以指定 image 的名稱與 tag（例如 ubuntu-netvim:latest）。
+- . 表示 Dockerfile 位於當前目錄。
 
+🛠️ Docker run 範例
+```bash
+# 使用剛剛 build 好的 my-image:latest 建立 container 並啟動
+docker run --name myUbuntu-netvim -it ubuntu-netvim:latest
+```
+💡 備註：
+- --name myUbuntu-netvim：為這個 container 命名，方便後續管理。
+- -it：啟動互動式終端機（interactive + TTY），可以直接進入 container 裡面操作。
+- ubuntu-netvim:latest：指定要啟動的 image 及 tag（這裡用的是 ubuntu-netvim:latest）。
+
+#### 🔔 小提醒
+- 🆕 每次修改 Dockerfile 內容後，都需要重新執行 docker build 來產生新的 image。
