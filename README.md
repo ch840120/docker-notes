@@ -1,6 +1,46 @@
 # 🐳 Docker 教學
 
-## ✨ 前言
+- [🐳 Docker 教學](#-docker-教學)
+  - [🐳 前言](#-前言)
+  - [🐳 Docker 是什麼？](#-docker-是什麼)
+  - [🐳 Docker 有什麼優點？](#-docker-有什麼優點)
+  - [🐳 Docker 架構簡單說明](#-docker-架構簡單說明)
+    - [1️⃣ Docker Client（用戶端）](#1️⃣-docker-client用戶端)
+    - [2️⃣ Docker Engine（引擎）](#2️⃣-docker-engine引擎)
+  - [🐳 Docker 常用指令](#-docker-常用指令)
+    - [📜 基本指令](#-基本指令)
+    - [📦 映像檔相關](#-映像檔相關)
+    - [🧱 容器操作](#-容器操作)
+      - [🔧 常用選項（OPTIONS）](#-常用選項options)
+      - [📜 常見命令 (COMMAND) 和參數 (ARG)](#-常見命令-command-和參數-arg)
+    - [📜 建立映像（Dockerfile）](#-建立映像dockerfile)
+    - [📁 檔案操作與 Volume](#-檔案操作與-volume)
+    - [🐙 進階實用](#-進階實用)
+  - [🐳 什麼是 Dockerfile？](#-什麼是-dockerfile)
+    - [📜 Dockerfile範例檔](#-dockerfile範例檔)
+        - [📜 Dockerfile範例檔指令說明](#-dockerfile範例檔指令說明)
+    - [📜 Dockerfile常用指令](#-dockerfile常用指令)
+  - [🐳 什麼是 Docker Compose？](#-什麼是-docker-compose)
+    - [📜 Docker Compose範例檔](#-docker-compose範例檔)
+        - [📜 範例檔指令說明](#-範例檔指令說明)
+    - [📜 Docker Compose常用指令](#-docker-compose常用指令)
+  - [⚙️ Docker 實作](#️-docker-實作)
+    - [🔧 範例1:自製 Ubuntu + Vim 映像並上傳 Docker Hub](#-範例1自製-ubuntu--vim-映像並上傳-docker-hub)
+    - [🔧 範例2:自製 Ubuntu + Vim 映像並上傳至 Private Docker Registry](#-範例2自製-ubuntu--vim-映像並上傳至-private-docker-registry)
+      - [🛤️ 範例1、2流程圖](#️-範例12流程圖)
+    - [🔧 範例3:自製Dockerfile建立安裝vim與net-tools的Ubuntu](#-範例3自製dockerfile建立安裝vim與net-tools的ubuntu)
+      - [📁 專案目錄結構](#-專案目錄結構)
+      - [📄 Dockerfile](#-dockerfile)
+      - [📄 start.sh](#-startsh)
+      - [🛠️ Docker build 範例](#️-docker-build-範例)
+      - [🔔 小提醒](#-小提醒)
+    - [🔧 範例4: 自製Docker Compose快速架設PostgreSQL + pgAdmin](#-範例4-自製docker-compose快速架設postgresql--pgadmin)
+      - [📁 專案目錄結構](#-專案目錄結構-1)
+      - [📄 docker-compose.yml](#-docker-composeyml)
+      - [🛠️ Docker Compose 啟動範例](#️-docker-compose-啟動範例)
+      - [🔔 小提醒](#-小提醒-1)
+
+## 🐳 前言
 你是否遇過「我的程式在我電腦可以跑，別人卻不行」的問題？  
 Docker 可以幫你把程式和運行環境打包起來，不管在哪台電腦都能正常跑，解決這種困擾。  
 這份教學從零開始，帶你一步步認識 Docker，超適合新手！
@@ -11,13 +51,13 @@ Docker 是一種容器技術，能把應用程式和它需要的環境（程式�
 簡單說就是：  
 📦 把程式和環境打包 → 🚀 隨時啟動 → 💻 不用擔心環境差異。
 
-## 🧩 Docker 有什麼優點？
+## 🐳 Docker 有什麼優點？
 - 🛠 輕量：比虛擬機只裝需要的東西。
 - 🌍 跨平台：開發、測試、上線都一致。
 - ⚡️ 快速啟動：秒開容器，不用等系統開機。
 - 🔁 適合 CI/CD 自動化流程。
 
-## 🧭 Docker 架構簡單說明
+## 🐳 Docker 架構簡單說明
 這張圖展示了 Docker 的基本組成與運作流程，分為三大核心元件：
 <br><br>
 <img src="https://github.com/user-attachments/assets/724cc43c-f6d7-4b40-8a87-a066cab65803" width="500"/>
@@ -31,9 +71,9 @@ Docker 是一種容器技術，能把應用程式和它需要的環境（程式�
 - 📦 Image（映像檔）：容器模板。
 - 🧱 Container（容器）：執行中的實體環境。
 
-## 📌 Docker 常用指令
+## 🐳 Docker 常用指令
 
-### 🐳 基本指令
+### 📜 基本指令
 ```bash
 docker --version      # 查看 Docker 版本
 docker info           # 查看系統資訊
@@ -70,15 +110,14 @@ docker rm <容器ID>               # 刪除容器
 | `-e KEY=VALUE` | 設定環境變數                |
 | `-it`          | 互動模式（結合 `-i` 和 `-t`）  |
 
-#### 
-📜 常見命令 (COMMAND) 和參數 (ARG)
+#### 📜 常見命令 (COMMAND) 和參數 (ARG)
 | 指令範例                     | 說明            |
 | ------------------------ | ------------- |
 | `/bin/bash`              | 啟動 Bash 終端機   |
 | `python app.py`          | 執行 Python 程式  |
 | `nginx -g 'daemon off;'` | 讓 nginx 不背景執行 |
 
-### 📝 建立映像（Dockerfile）
+### 📜 建立映像（Dockerfile）
 ```bash
 docker build -t <映像名稱> .
 ```
@@ -99,7 +138,7 @@ docker-compose up                  # 使用 docker-compose 啟動
 docker-compose down                # 停止並移除服務
 ```
 
-## 📝 什麼是 Dockerfile？
+## 🐳 什麼是 Dockerfile？
 
 Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案。  
 透過撰寫 Dockerfile，我們可以定義應用程式所需的作業系統環境、安裝的套件、複製的程式碼，以及容器啟動時要執行的指令。  
@@ -132,7 +171,7 @@ docker images                         # 列出本地所有映像檔
 docker rmi <映像ID或名稱>             # 刪除指定映像檔
 ```
 
-## 📝 什麼是 Docker Compose？
+## 🐳 什麼是 Docker Compose？
 
 Docker Compose 是用來定義和管理多個 Docker 容器的工具，  
 透過一個 `docker-compose.yml` 檔案，你可以描述多個服務（容器）的設定與關聯，  
@@ -420,14 +459,11 @@ docker compose up -d
 # 停止並移除服務
 docker compose down
 ```
-#### 💡 備註：
-
+#### 🔔 小提醒
 - docker compose up -d 會在背景啟動 PostgreSQL 與 pgAdmin 服務。
 - 你可以用瀏覽器打開 http://localhost:8080 進入 pgAdmin，帳號密碼就是 PGADMIN_DEFAULT_EMAIL 和 PGADMIN_DEFAULT_PASSWORD。
 - PostgreSQL 預設連接埠是 5432。
 - docker compose down 會停止並刪除服務容器，但不會刪除 volume 裡的資料。
-
-#### 🔔 小提醒
 - 每次修改完 docker-compose.yml 設定後，記得重新執行 docker compose up -d。
 - volume 讓資料持久化，即使容器刪除資料仍保留。
 
