@@ -1,117 +1,186 @@
-# 🐳 Docker教學
+# 🐳 Docker 教學
 
 ## ✨ 前言
-你有遇過「我的程式在我電腦可以跑，別人電腦就不行」這種狀況嗎？Docker 就是來解決這種問題的好幫手！  
-透過 Docker，我們可以把程式和需要的東西（像是環境、套件）一起打包起來，放到任何一台電腦都能順利運行，不用再怕安裝過程一堆 bug。
-
-這份教學會從零開始，帶你一步步認識 Docker，不管你是不是剛開始學程式都適合！
+你是否遇過「我的程式在我電腦可以跑，別人卻不行」的問題？  
+Docker 可以幫你把程式和運行環境打包起來，不管在哪台電腦都能正常跑，解決這種困擾。  
+這份教學從零開始，帶你一步步認識 Docker，超適合新手！
 
 ## 🐳 Docker 是什麼？
-Docker 是一種容器化技術，可以讓你把應用程式和它的執行環境（如程式碼、相依套件、作業系統）打包成一個獨立的容器，確保在任何地方都能一致執行。
+Docker 是一種容器技術，能把應用程式和它需要的環境（程式碼、依賴、作業系統）包成一個獨立容器，確保到哪都能跑。
 
-🔧 簡單來說，Docker 就像：
-<br>
-📦 把應用加環境打包起來 →
-<br>
-🚀 隨時隨地快速啟動 →
-<br>
-💻 不用擔心「我電腦跑不動」的問題
+簡單說就是：  
+📦 把程式和環境打包 → 🚀 隨時啟動 → 💻 不用擔心環境差異。
 
-## 🧩 Docker 有什麼特色？
-- 🛠 輕量：不像虛擬機要整個作業系統，容器只裝需要的東西
-- 🌍 跨平台：開發環境、測試環境、上線環境都可以一模一樣
-- ⚡️ 快速啟動：秒開，不需等作業系統開機
-- 🔁 容易整合 CI/CD：適合 DevOps、雲端部署、自動化流程
+## 🧩 Docker 有什麼優點？
+- 🛠 輕量：比虛擬機只裝需要的東西。
+- 🌍 跨平台：開發、測試、上線都一致。
+- ⚡️ 快速啟動：秒開容器，不用等系統開機。
+- 🔁 適合 CI/CD 自動化流程。
 
-## 🧭 圖片說明：Docker 架構運作原理
+## 🧭 Docker 架構簡單說明
 這張圖展示了 Docker 的基本組成與運作流程，分為三大核心元件：
 <br><br>
 <img src="https://github.com/user-attachments/assets/724cc43c-f6d7-4b40-8a87-a066cab65803" width="500"/>
 
 ### 1️⃣ Docker Client（用戶端）
-- 是使用者與 Docker 互動的介面，通常透過 CLI（例如 docker build, docker run）發出指令。
-- 指令會送到 Docker Engine。
+你發出指令的地方，像 `docker run`。
 
 ### 2️⃣ Docker Engine（引擎）
-- 是 Docker 的核心，負責接收指令並執行相關操作。
-- 包含兩個關鍵部分：
+接收指令，幫你做事。  
+包含：
+- 📦 Image（映像檔）：容器模板。
+- 🧱 Container（容器）：執行中的實體環境。
 
-#### 📦 Image（映像檔）
-- 是一組可執行的程式、程式庫、依賴與設定的集合。
-- 可視為容器的「模板」。
+## 📌 Docker 常用指令
 
-#### 🧱 Container（容器）
-- 是從映像檔啟動後的實體執行環境，類似輕量虛擬機。
-- 具有獨立檔案系統與執行空間，彼此隔離但共享主機核心。
-
-#### 🔁 運作流程簡述：
-- 使用者透過 Docker Client 發出指令（如 run）。
-- Docker Engine 接收指令並使用對應的 Image。
-- 從映像檔啟動並建立 Container，開始執行應用。
-
-## 📌Docker常用指令
 ### 🐳 基本指令
-- docker --version	查看 Docker 版本
-- docker info	顯示 Docker 系統資訊
-- docker help	查看指令幫助
+```bash
+docker --version      # 查看 Docker 版本
+docker info           # 查看系統資訊
+docker help           # 查看指令說明
+``` 
 
-### 📦 映像檔（Image）相關
-- docker search <關鍵字> 在 Docker Hub 上搜尋映像，例如：docker search ubuntu
-- docker pull <映像名稱>	從 Docker Hub 下載映像檔，例如：docker pull nginx
-- docker images	列出本地所有映像檔
-- docker rmi <映像 ID>	刪除映像檔
+### 📦 映像檔相關
+```bash
+docker search <關鍵字>    # 在 Docker Hub 搜尋映像
+docker pull <映像名稱>    # 下載映像
+docker images             # 列出本地映像
+docker rmi <映像ID>       # 刪除映像
+```
 
-### 🧱 容器（Container）操作
-- docker run <映像名稱> 建立並啟動容器（例如：docker run nginx）
-- docker run -it <映像> /bin/bash 啟動互動式終端機
-- docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 使用額外參數啟動容器
+### 🧱 容器操作
+``` bash
+docker run <映像名稱>            # 建立並啟動容器
+docker run -it <映像> /bin/bash   # 互動模式啟動容器
+docker ps                        # 查看正在執行的容器
+docker ps -a                    # 查看所有容器（包含停止）
+docker stop <容器ID>             # 停止容器
+docker start <容器ID>            # 啟動容器
+docker restart <容器ID>          # 重啟容器
+docker rm <容器ID>               # 刪除容器
+```
+#### 🔧 常用選項（OPTIONS）
+| 選項             | 說明                    |
+| -------------- | --------------------- |
+| `-d`           | 背景執行容器                |
+| `--name <名稱>`  | 指定容器名稱                |
+| `-p 主機埠:容器埠`   | 映射埠口（例如：`-p 8080:80`） |
+| `-v 主機目錄:容器目錄` | 掛載磁碟卷（volume）         |
+| `--rm`         | 容器停止後自動刪除             |
+| `-e KEY=VALUE` | 設定環境變數                |
+| `-it`          | 互動模式（結合 `-i` 和 `-t`）  |
 
-##### 🔧 常用 [OPTIONS]：
-| 選項             | 說明                                         |
-| -------------- | ------------------------------------------ |
-| `-d`           | 背景執行容器（detached mode）                      |
-| `--name <名稱>`  | 指定容器名稱                                     |
-| `-p 主機埠:容器埠`   | 對外開放埠口（port mapping）<br>例：`-p 8080:80`     |
-| `-v 主機目錄:容器目錄` | 掛載磁碟（volume）<br>例：`-v ~/data:/app/data`    |
-| `--rm`         | 容器停止後自動刪除                                  |
-| `-e KEY=VALUE` | 設定環境變數（ENV）<br>例：`-e TZ=Asia/Taipei`       |
-| `-i`           | 保持標準輸入開啟（interactive mode，可互動操作）           |
-| `-t`           | 分配一個終端機（TTY，讓輸入輸出像真實終端機）                   |
-| `-it`          | 結合 `-i` 與 `-t`，進入互動式終端機，最常用於手動操作容器如 bash 等 |
-
-
-##### 📜 常見 [COMMAND] [ARG...]：
-| 指令範例                     | 說明                      |
-| ------------------------ | ----------------------- |
-| `/bin/bash`              | 啟動 Bash 終端機             |
-| `python app.py`          | 執行 Python 應用程式          |
-| `nginx -g 'daemon off;'` | 執行 nginx 並讓它不背景執行（常見用法） |
-
-#### 🧱 其他容器指令
-- docker ps	查看正在執行中的容器
-- docker ps -a	查看所有容器（包含已停止）
-- docker stop <容器 ID>	停止容器
-- docker start <容器 ID>	啟動容器
-- docker restart <容器 ID>	重啟容器
-- docker rm <容器 ID>	刪除容器
-
+#### 
+📜 常見命令 (COMMAND) 和參數 (ARG)
+| 指令範例                     | 說明            |
+| ------------------------ | ------------- |
+| `/bin/bash`              | 啟動 Bash 終端機   |
+| `python app.py`          | 執行 Python 程式  |
+| `nginx -g 'daemon off;'` | 讓 nginx 不背景執行 |
 
 ### 📝 建立映像（Dockerfile）
-- docker build -t <映像名稱> .	用 Dockerfile 建立映像檔（在該資料夾中）
+```bash
+docker build -t <映像名稱> .
+```
 
 ### 📁 檔案操作與 Volume
-- docker cp <容器 ID>:<路徑> <本地路徑>	從容器複製檔案到主機
-- docker volume ls	列出所有 Volume
-- docker volume rm <Volume 名稱>	刪除 Volume
+```bash
+docker cp <容器ID>:<路徑> <本機路徑>   # 複製檔案從容器到主機
+docker volume ls                      # 列出所有 Volume
+docker volume rm <Volume名稱>          # 刪除 Volume
+```
 
 ### 🐙 進階實用
-- docker exec -it <容器 ID> bash	進入容器的 shell
-- docker logs <容器 ID>	查看容器日誌
-- docker network ls	查看網路
-- docker-compose up	用 docker-compose.yml 啟動應用（需安裝 Compose）
-- docker-compose down	停止並移除所有服務
+``` bash
+docker exec -it <容器ID> bash       # 進入容器 shell
+docker logs <容器ID>                # 查看容器日誌
+docker network ls                   # 查看網路
+docker-compose up                  # 使用 docker-compose 啟動
+docker-compose down                # 停止並移除服務
+```
 
-## 🔧🐳 Docker 實作：自製 Ubuntu + Vim 映像並上傳 Docker Hub
+## 📝 什麼是 Dockerfile？
+
+Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案。  
+透過撰寫 Dockerfile，我們可以定義應用程式所需的作業系統環境、安裝的套件、複製的程式碼，以及容器啟動時要執行的指令。  
+簡單來說，Dockerfile 讓專案環境一致、部署更方便，任何人都能根據它重現相同的執行環境。🚀
+
+### 📜 Dockerfile範例檔
+
+```dockerfile
+FROM python:3.10     # 指定基礎映像為 Python 3.10 官方映像
+WORKDIR /app         # 設定工作目錄為 /app
+COPY . .             # 複製當前目錄所有檔案到容器的工作目錄
+RUN pip install -r requirements.txt   # 安裝必要套件
+CMD ["python", "app.py"]               # 容器啟動時執行指令
+```
+##### 📜 Dockerfile範例檔指令說明
+| 指令    | 說明                                    |
+|--------|---------------------------------------|
+| `FROM`  | 指定基礎映像。例：`FROM python:3.10`    |
+| `WORKDIR` | 設定工作目錄，後續指令會在此目錄執行。        |
+| `COPY`  | 將檔案或資料夾複製到映像檔中。                |
+| `RUN`   | 建置映像時執行指令，通常用來安裝套件或設置環境。 |
+| `CMD`   | 容器啟動時執行的預設指令。                    |
+
+### 📜 Dockerfile常用指令
+```bash
+docker build -t <名稱> .               # 根據 Dockerfile 建立映像，並指定名稱
+docker build --no-cache -t <名稱> .   # 不使用快取，強制重新建置映像
+docker build -f <檔名> -t <名稱> .    # 指定使用特定的 Dockerfile 建立映像
+docker images                         # 列出本地所有映像檔
+docker rmi <映像ID或名稱>             # 刪除指定映像檔
+```
+
+## 📝 什麼是 Docker Compose？
+
+Docker Compose 是用來定義和管理多個 Docker 容器的工具，  
+透過一個 `docker-compose.yml` 檔案，你可以描述多個服務（容器）的設定與關聯，  
+一行指令就能同時啟動、停止整個應用環境。
+
+### 📜 Docker Compose範例檔
+
+```yaml
+version: "3.8"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: exampledb
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  dbdata:
+```
+##### 📜 範例檔指令說明
+| 指令            | 說明                                                      |
+|----------------|---------------------------------------------------------|
+| `version`       | 指定 Docker Compose 檔案格式版本，例：`"3.8"`                     |
+| `services`      | 定義多個服務（容器）的設定區塊                                        |
+| `image`         | 指定服務使用的映像檔，例如 `nginx:latest` 或 `postgres:15`           |
+| `ports`         | 設定本機與容器埠口的映射，例如 `"8080:80"` 表示本機 8080 連到容器 80 端口 |
+| `environment`   | 設定容器的環境變數，用於設定資料庫使用者、密碼、資料庫名稱等                   |
+| `volumes`       | 掛載持久化儲存卷，確保資料在容器刪除後仍保留                               |
+| `volumes:`      | 在根部定義命名卷（volume），此例中定義 `dbdata`                             |
+
+### 📜 Docker Compose常用指令
+```bash
+docker compose up -d                 # 以背景模式啟動所有服務
+docker compose down                  # 停止並移除服務（容器、網路等）
+docker compose ps                   # 查看目前正在執行的服務
+docker compose logs -f              # 持續查看服務輸出日誌
+docker compose restart <服務名稱>   # 重新啟動指定服務（如 web 或 db）
+```
+
+## ⚙️ Docker 實作
+### 🔧 範例1:自製 Ubuntu + Vim 映像並上傳 Docker Hub
 ```bash
 ## ✅ Step 1: 從 Docker Hub 下載最新的 Ubuntu 映像
 docker pull ubuntu:latest
@@ -149,7 +218,7 @@ docker logout
 # 登入你的帳號後，即可看到 username/ubuntu-with-vim 的映像已經上傳
 ```
 
-## 🔧🐳 Docker 實作：自製 Ubuntu + Vim 映像並上傳至 Private Docker Registry
+### 🔧 範例2:自製 Ubuntu + Vim 映像並上傳至 Private Docker Registry
 
 ```bash
 # ✅ Step 1: 從 Docker Hub 下載最新的 Ubuntu 映像
@@ -224,38 +293,10 @@ curl http://yourHostIP:5000/v2/_catalog
 # 回應中應會出現 "username/ubuntu-with-vim"
 # 👉  請將 "username" 改為你的 Docker 使用者名稱; "yourHostIP" 改為你的主機IP
 ```
+#### 🛤️ 範例1、2流程圖
 <img src="https://github.com/user-attachments/assets/4cecd3f6-a4b3-4ccb-bcb9-1f9a259210c1" width="500"/>
 
-## 🐳 什麼是 Dockerfile？
-Dockerfile 是用來自動化建立 Docker 映像檔（image）的腳本檔案。
-透過撰寫 Dockerfile，我們可以定義應用程式所需的作業系統環境、安裝的套件、複製的程式碼，以及容器啟動時要執行的指令。
-簡單來說，Dockerfile 可以讓專案環境一致、部署更方便，任何人都可以根據這個檔案重現相同的執行環境。🚀
-
-### 📄 常用指令說明
-- FROM 🏗️
-指定要使用的基礎映像。
-例：FROM python:3.10 表示以 Python 3.10 官方映像為基礎。
-
-- WORKDIR 📁
-設定工作目錄。後續的指令（如 COPY、RUN）都會在這個目錄下執行。
-例：WORKDIR /app
-
-- COPY 📦
-複製檔案或資料夾到映像檔內。
-例：COPY . . 會把本地所有檔案複製到容器的當前工作目錄。
-
-- RUN 🛠️
-在建置映像時執行指令，通常用來安裝套件或進行環境設置。
-例：RUN pip install -r requirements.txt
-
-- CMD ▶️
-指定容器啟動時要執行的預設指令。
-例：CMD ["python", "app.py"]
-
-### 🛠️ Dockerfile實作: 自製 Ubuntu 安裝腳本：安裝 vim 與 net-tools
-本專案提供一份自訂的 Dockerfile 與啟動腳本 start.sh，讓你可以快速建立一個包含常用工具的 Ubuntu 環境。
-這份 Dockerfile 會自動安裝 vim（常用的文字編輯器）和 net-tools（提供如 ifconfig、netstat 等網路相關工具），方便你在開發、測試或維護時，隨時擁有這些常用指令。
-同時，我也準備了一個 start.sh 啟動腳本，進行環境初始化與訊息提示，更容易管理自己的容器啟動流程。
+### 🔧 範例3:自製Dockerfile建立安裝vim與net-tools的Ubuntu
 
 #### 📁 專案目錄結構
 ```
@@ -320,3 +361,74 @@ docker run --name myUbuntu-netvim -it ubuntu-netvim:latest
 
 #### 🔔 小提醒
 - 🆕 每次修改 Dockerfile 內容後，都需要重新執行 docker build 來產生新的 image。
+
+### 🔧 範例4: 自製Docker Compose快速架設PostgreSQL + pgAdmin
+
+#### 📁 專案目錄結構
+```
+📁 pg-postgres-pgadmin/
+├── 📄 docker-compose.yml
+```
+
+#### 📄 docker-compose.yml
+```yaml
+version: "3.8"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: abel
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - pgnetwork
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: abel@example.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+    networks:
+      - pgnetwork
+
+volumes:
+  pgdata:
+  pgadmin_data:
+
+networks:
+  pgnetwork:
+```
+#### 🛠️ Docker Compose 啟動範例
+```bash
+# 啟動所有服務（背景執行）
+docker compose up -d
+
+# 停止並移除服務
+docker compose down
+```
+#### 💡 備註：
+
+- docker compose up -d 會在背景啟動 PostgreSQL 與 pgAdmin 服務。
+- 你可以用瀏覽器打開 http://localhost:8080 進入 pgAdmin，帳號密碼就是 PGADMIN_DEFAULT_EMAIL 和 PGADMIN_DEFAULT_PASSWORD。
+- PostgreSQL 預設連接埠是 5432。
+- docker compose down 會停止並刪除服務容器，但不會刪除 volume 裡的資料。
+
+#### 🔔 小提醒
+- 每次修改完 docker-compose.yml 設定後，記得重新執行 docker compose up -d。
+- volume 讓資料持久化，即使容器刪除資料仍保留。
+
+
