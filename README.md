@@ -1,6 +1,7 @@
 # 🐳 Docker 教學
 ## 🗂️ 目錄
 - [🐳 Docker 教學](#-docker-教學)
+  - [🗂️ 目錄](#️-目錄)
   - [🐳 前言](#-前言)
   - [🐳 Docker 是什麼？](#-docker-是什麼)
   - [🐳 Docker 有什麼優點？](#-docker-有什麼優點)
@@ -39,6 +40,7 @@
       - [📄 docker-compose.yml](#-docker-composeyml)
       - [🛠️ Docker Compose 啟動範例](#️-docker-compose-啟動範例)
       - [🔔 小提醒](#-小提醒-1)
+
 
 ## 🐳 前言
 你是否遇過「我的程式在我電腦可以跑，別人卻不行」的問題？  
@@ -219,6 +221,7 @@ docker compose restart <服務名稱>   # 重新啟動指定服務（如 web 或
 ```
 
 ## ⚙️ Docker 實作
+
 ### 🔧 範例1:自製 Ubuntu + Vim 映像並上傳 Docker Hub
 ```bash
 ## ✅ Step 1: 從 Docker Hub 下載最新的 Ubuntu 映像
@@ -256,6 +259,8 @@ docker logout
 # 開啟瀏覽器並前往 https://hub.docker.com/repositories
 # 登入你的帳號後，即可看到 username/ubuntu-with-vim 的映像已經上傳
 ```
+
+---
 
 ### 🔧 範例2:自製 Ubuntu + Vim 映像並上傳至 Private Docker Registry
 
@@ -335,6 +340,8 @@ curl http://yourHostIP:5000/v2/_catalog
 #### 🛤️ 範例1、2流程圖
 <img src="https://github.com/user-attachments/assets/4cecd3f6-a4b3-4ccb-bcb9-1f9a259210c1" width="500"/>
 
+---
+
 ### 🔧 範例3:自製Dockerfile建立安裝vim與net-tools的Ubuntu
 
 #### 📁 專案目錄結構
@@ -400,6 +407,8 @@ docker run --name myUbuntu-netvim -it ubuntu-netvim:latest
 
 #### 🔔 小提醒
 - 🆕 每次修改 Dockerfile 內容後，都需要重新執行 docker build 來產生新的 image。
+
+---
 
 ### 🔧 範例4: 自製Docker Compose快速架設PostgreSQL + pgAdmin
 
